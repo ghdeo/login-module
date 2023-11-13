@@ -28,7 +28,7 @@ class CompanyUserTest {
         assertEquals("password", companyUser.getCorp_pw());
         assertEquals("Test Company", companyUser.getCorp_name());
         assertEquals("123-456-7890", companyUser.getPhone());
-        assertEquals("ABC123", companyUser.getCrop_code());
+        assertEquals("ABC123", companyUser.getCorp_code());
         assertEquals(true, companyUser.isCorp_auth());
         assertNotNull(companyUser.getCreated_at());
     }

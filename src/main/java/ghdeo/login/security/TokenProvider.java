@@ -84,4 +84,25 @@ public class TokenProvider {
         }
         return false;
     }
+
+    public String getEmail(String token, String secretKeyType) {
+        String SECRET_KEY = "";
+        if (secretKeyType.equals("AccessToken")) {
+            SECRET_KEY = ACCESS_SECRET_KEY;
+        }
+        else if (secretKeyType.equals("RefreshToken")) {
+            SECRET_KEY = REFRESH_SECRET_KEY;
+        }
+
+        // parseClaimsJws 메서드가 Base64로 디코딩 및 파싱
+        // 헤더와 페이로드를 setSigningKey로 넘어온 시크릿을 이용해 서명한 후 token의 서명과 비교
+        // 위조되지 않았다면 페이로드(Claims) 리턴, 위조라면 예외를 날린다.
+        // 그 중 우리는 email이 필요하므로 getBody를 부른다.
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+
+        return claims.getSubject();
+    }
 }

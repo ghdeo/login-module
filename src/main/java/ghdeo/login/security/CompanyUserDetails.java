@@ -1,6 +1,6 @@
 package ghdeo.login.security;
 
-import ghdeo.login.entity.CompanyUser;
+import ghdeo.login.domain.CompanyUser;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

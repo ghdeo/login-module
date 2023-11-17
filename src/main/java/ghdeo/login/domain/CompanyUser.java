@@ -1,4 +1,4 @@
-package ghdeo.login.entity;
+package ghdeo.login.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

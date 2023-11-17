@@ -1,6 +1,6 @@
 package ghdeo.login.controller;
 
-import ghdeo.login.entity.CompanyUserDto;
+import ghdeo.login.domain.CompanyUserDto;
 import ghdeo.login.security.CompanyUserDetails;
 import ghdeo.login.security.CompanyUserDetailsService;
 import lombok.RequiredArgsConstructor;

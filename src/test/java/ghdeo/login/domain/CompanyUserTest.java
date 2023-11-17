@@ -1,4 +1,4 @@
-package ghdeo.login.entity;
+package ghdeo.login.domain;
 
 import org.junit.jupiter.api.Test;
 

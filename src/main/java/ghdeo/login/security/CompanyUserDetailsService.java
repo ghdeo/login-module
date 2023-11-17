@@ -1,6 +1,6 @@
 package ghdeo.login.security;
 
-import ghdeo.login.entity.CompanyUser;
+import ghdeo.login.domain.CompanyUser;
 import ghdeo.login.repository.CompanyUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

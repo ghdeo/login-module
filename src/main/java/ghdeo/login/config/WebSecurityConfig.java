@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +35,7 @@ public class WebSecurityConfig {
                 // "ROLE_ANONYMOUS" 권한을 로그인하지 않은 사용자에게 자동으로 할당
                 .anonymous()
                 .and() // filter 등록
-                .addFilterAfter(jwtFilter, CorsFilter.class); // 매 요청마다 CorsFilter 실행한 후에 jwtAuthenticationFilter 실행한다.
+                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class); // 매 요청마다 CorsFilter 실행한 후에 jwtAuthenticationFilter 실행한다.
 
         return httpSecurity.build();
     }

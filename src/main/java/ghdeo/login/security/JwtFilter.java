@@ -2,6 +2,7 @@ package ghdeo.login.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -9,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -25,6 +27,8 @@ public class JwtFilter extends OncePerRequestFilter {
     private TokenProvider tokenProvider;
     @Autowired
     private CompanyUserDetailsService companyUserDetailsService;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -34,9 +38,13 @@ public class JwtFilter extends OncePerRequestFilter {
             log.info("Filter is running...");
 
             // Access Token 검사하기 // JWT이므로 인가 서버에 요청하지 않고도 검증 가능
-            if (accessToken != null && !accessToken.equalsIgnoreCase("null") && tokenProvider.validateToken(accessToken, "AccessToken")) {
+            if (accessToken != null
+                    && !accessToken.equalsIgnoreCase("null")
+                    && tokenProvider.validateToken(accessToken)
+                    && ObjectUtils.isEmpty((String) redisTemplate.opsForValue().get(accessToken))
+            ) {
                 // email 가져오기 // 위조된 경우 예외 처리된다.
-                String email = tokenProvider.getEmail(accessToken, "AccessToken");
+                String email = tokenProvider.getEmail(accessToken);
                 log.info("Authenticated email : " + email);
 
                 // email을 통해 user 정보 가져오기

@@ -2,11 +2,13 @@ package ghdeo.login.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
 public class CompanyUserDto {
     private Long corp_seq; // 기업 인덱스
     private String email; // 관리자 이메일

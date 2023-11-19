@@ -1,7 +1,6 @@
 package ghdeo.login.service;
 
-import ghdeo.login.domain.CompanyUser;
-import ghdeo.login.domain.CompanyUserDto;
+import ghdeo.login.domain.*;
 import ghdeo.login.repository.CompanyUserRepository;
 import ghdeo.login.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -39,36 +38,33 @@ public class AuthService {
         return save.getCorp_seq();
     }
 
-    public CompanyUserDto signIn(final CompanyUserDto companyUserDto) {
+    public SignInResponseDto signIn(final SigInRequestDto sigInRequestDto) {
         CompanyUser companyUser = companyUserRepository
-                .findByEmail(companyUserDto.getEmail())
+                .findByEmail(sigInRequestDto.getEmail())
                 .orElseThrow();
 
-        if (!passwordEncoder.matches(companyUser.getCorp_pw(), companyUserDto.getCorp_pw())) {
+        if (!passwordEncoder.matches(sigInRequestDto.getCorp_pw(), companyUser.getCorp_pw())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-    return CompanyUserDto.builder()
-            .corp_seq(companyUserDto.getCorp_seq())
-            .email(companyUserDto.getEmail())
-            .corp_pw(companyUserDto.getCorp_pw())
-            .corp_name(companyUserDto.getCorp_name())
-            .phone(companyUserDto.getPhone())
-            .corp_code(companyUserDto.getCorp_code())
-            .accessToken(tokenProvider.createToken(companyUserDto.getEmail()))
-            .build();
+        return SignInResponseDto.builder()
+                .email(sigInRequestDto.getEmail())
+                .access_token(tokenProvider.createToken(sigInRequestDto.getEmail()))
+                .build();
     }
 
-    public Long signOut(final CompanyUserDto companyUserDto) {
-        if (!tokenProvider.validateToken(companyUserDto.getAccessToken())) {
+    public SignOutResponseDto signOut(final SignOutRequestDto signOutRequestDto) {
+        if (!tokenProvider.validateToken(signOutRequestDto.getAccess_token())) {
             System.out.println("잘못된 요쳥");
         }
 
         // 해당 Access Token 유효 시간을 가지고 와서 BlackList 로 저장하기
-        Long expiration = tokenProvider.getExpiration(companyUserDto.getAccessToken());
+        Long expiration = tokenProvider.getExpiration(signOutRequestDto.getAccess_token());
         redisTemplate.opsForValue()
-                .set(companyUserDto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+                .set(signOutRequestDto.getAccess_token(), "logout", expiration, TimeUnit.MILLISECONDS);
 
-        return companyUserDto.getCorp_seq();
+        return SignOutResponseDto.builder()
+                .email(signOutRequestDto.getEmail())
+                .build();
     }
 }

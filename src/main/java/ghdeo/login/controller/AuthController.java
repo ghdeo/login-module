@@ -1,10 +1,11 @@
 package ghdeo.login.controller;
 
 import ghdeo.login.domain.CompanyUserDto;
+import ghdeo.login.domain.SigInRequestDto;
+import ghdeo.login.domain.SignOutRequestDto;
 import ghdeo.login.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +23,13 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signIn(@RequestBody CompanyUserDto companyUserDto) {
-        return ResponseEntity.ok().body(authService.signIn(companyUserDto));
+    public ResponseEntity<?> signIn(@RequestBody SigInRequestDto sigInRequestDto) {
+        return ResponseEntity.ok().body(authService.signIn(sigInRequestDto));
     }
 
     @PostMapping("/signout")
-    public ResponseEntity<?> signOut(@RequestBody CompanyUserDto companyUserDto) {
-        return ResponseEntity.ok().body(authService.signOut(companyUserDto));
+    public ResponseEntity<?> signOut(@RequestBody SignOutRequestDto signOutRequestDto) {
+        return ResponseEntity.ok().body(authService.signOut(signOutRequestDto));
     }
 
 }

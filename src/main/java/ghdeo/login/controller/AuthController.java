@@ -1,7 +1,7 @@
 package ghdeo.login.controller;
 
 import ghdeo.login.domain.CompanyUserDto;
-import ghdeo.login.domain.SigInRequestDto;
+import ghdeo.login.domain.SignInRequestDto;
 import ghdeo.login.domain.SignOutRequestDto;
 import ghdeo.login.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signIn(@RequestBody SigInRequestDto sigInRequestDto) {
-        return ResponseEntity.ok().body(authService.signIn(sigInRequestDto));
+    public ResponseEntity<?> signIn(@RequestBody SignInRequestDto signInRequestDto) {
+        return ResponseEntity.ok().body(authService.signIn(signInRequestDto));
     }
 
     @PostMapping("/signout")

@@ -38,18 +38,18 @@ public class AuthService {
         return save.getCorp_seq();
     }
 
-    public SignInResponseDto signIn(final SigInRequestDto sigInRequestDto) {
+    public SignInResponseDto signIn(final SignInRequestDto signInRequestDto) {
         CompanyUser companyUser = companyUserRepository
-                .findByEmail(sigInRequestDto.getEmail())
+                .findByEmail(signInRequestDto.getEmail())
                 .orElseThrow();
 
-        if (!passwordEncoder.matches(sigInRequestDto.getCorp_pw(), companyUser.getCorp_pw())) {
+        if (!passwordEncoder.matches(signInRequestDto.getCorp_pw(), companyUser.getCorp_pw())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
         return SignInResponseDto.builder()
-                .email(sigInRequestDto.getEmail())
-                .access_token(tokenProvider.createToken(sigInRequestDto.getEmail()))
+                .email(signInRequestDto.getEmail())
+                .access_token(tokenProvider.createToken(signInRequestDto.getEmail()))
                 .build();
     }
 
